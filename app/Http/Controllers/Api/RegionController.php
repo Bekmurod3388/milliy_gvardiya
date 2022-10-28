@@ -63,5 +63,7 @@ class RegionController extends Controller
     public function destroy($id)
     {
         Region::find($id)->delete();
+        return response()->json("successfully", 200);
+
     }
 }
