@@ -192,6 +192,7 @@
 </div>
 </body>
 </html>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.1.min.js"
         integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"
@@ -209,9 +210,15 @@
             type: "POST",
             url: "http://127.0.0.1:8000/api/regions",
             data: { "name": data },
-        }).then(response){
-            console.log(response);
-        }
+            success: function (){
+                swal({
+                    // title: "Good job!",
+                    title: "Muvaffaqqiyatli yaratildi",
+                    icon: "success",
+                });
+            }
+        });
+        $('#exampleModal').modal('hide');
     }
 
 
