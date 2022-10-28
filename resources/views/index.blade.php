@@ -7,10 +7,39 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     <title>Document</title>
 </head>
 <body>
 <div class="p-3">
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Viloyat qo'shish</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('regions.store') }}" method="post" id="region_store">
+                        {{csrf_field()}}
+                        <div class="form-group">
+                            <label for="name">Viloyat nomi</label>
+                            <input type="text" name="name" id="name" class="form-control">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Yopish</button>
+                    <button type="button" class="btn btn-primary" onclick="region_store()">Saqlash</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <div class="col-12">
         <h1>Миллий Гвардия</h1>
     </div>
@@ -58,27 +87,48 @@
                     <form action="">
                         <div class="mb-3">
                             <label for="city">Viloyatlar</label>
-                            <select name="city" id="city" class="form-control form-select">
-                                <option value="">Xorazm</option>
-                                <option value="">Toshkent</option>
-                                <option value="">Navoiy</option>
-                            </select>
+                            <div class="d-flex">
+                                <select name="city" id="city" class="form-control form-select">
+                                    <option value="">Xorazm</option>
+                                    <option value="">Toshkent</option>
+                                    <option value="">Navoiy</option>
+                                </select>
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal">
+                                    <i class="bi bi-plus-lg"></i>
+                                </button>
+                                <button type="button" class="btn btn-danger"><i class="bi bi-trash"></i></button>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="city">Tumanlar</label>
-                            <select name="city" id="city" class="form-control form-select">
-                                <option value="">Urganch</option>
-                                <option value="">Toshkent</option>
-                                <option value="">Navoiy</option>
-                            </select>
+                            <div class="d-flex">
+                                <select name="city" id="city" class="form-control form-select">
+                                    <option value="">Urganch</option>
+                                    <option value="">Toshkent</option>
+                                    <option value="">Navoiy</option>
+                                </select>
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal">
+                                    <i class="bi bi-plus-lg"></i>
+                                </button>
+                                <button type="button" class="btn btn-danger"><i class="bi bi-trash"></i></button>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="city">Binolar</label>
-                            <select name="city" id="city" class="form-control form-select">
-                                <option value="">TATUUF</option>
-                                <option value="">TATU</option>
-                                <option value="">NDPU</option>
-                            </select>
+                            <div class="d-flex">
+                                <select name="city" id="city" class="form-control form-select">
+                                    <option value="">TATUUF</option>
+                                    <option value="">TATU</option>
+                                    <option value="">NDPU</option>
+                                </select>
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal">
+                                    <i class="bi bi-plus-lg"></i>
+                                </button>
+                                <button type="button" class="btn btn-danger"><i class="bi bi-trash"></i></button>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -142,6 +192,8 @@
 </div>
 </body>
 </html>
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"
+        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"
         integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -149,6 +201,19 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
 <script>
+
+
+    function region_store() {
+        var data = $('#name').val();
+        data = JSON.stringify(data);
+        $.ajax({
+            type: "POST",
+            url: "http://127.0.0.1:8000/regions",
+            data: data,
+        });
+    }
+
+
     var ctx = document.getElementById('myChart1').getContext('2d');
     var myChart = new Chart(ctx, {
         type: 'bar',

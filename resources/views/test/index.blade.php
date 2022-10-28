@@ -9,5 +9,6 @@
 </head>
 <body>
 @widget('recent_news')
+{{--{{ Widget::run('recent_news') }}--}}
 </body>
 </html>
