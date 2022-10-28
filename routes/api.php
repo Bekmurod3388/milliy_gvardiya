@@ -19,3 +19,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('regions', \App\Http\Controllers\Api\RegionController::class);
+Route::apiResource('districts', \App\Http\Controllers\Api\DistrictController::class);
+Route::apiResource('objects', \App\Http\Controllers\Api\ObjectController::class);

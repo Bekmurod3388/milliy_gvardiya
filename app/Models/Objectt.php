@@ -9,4 +9,5 @@ class Objectt extends Model
 {
     use HasFactory;
     protected $table = 'objects';
+    protected $guarded = [];
 }
