@@ -85,21 +85,8 @@
                 <div class="card-body">
                     <h3>Manzillar</h3>
                     <form action="">
-                        <div class="mb-3">
-                            <label for="city">Viloyatlar</label>
-                            <div class="d-flex">
-                                <select name="city" id="city" class="form-control form-select">
-                                    <option value="">Xorazm</option>
-                                    <option value="">Toshkent</option>
-                                    <option value="">Navoiy</option>
-                                </select>
-                                <button type="button" class="btn btn-success" data-bs-toggle="modal"
-                                        data-bs-target="#exampleModal">
-                                    <i class="bi bi-plus-lg"></i>
-                                </button>
-                                <button type="button" class="btn btn-danger"><i class="bi bi-trash"></i></button>
-                            </div>
-                        </div>
+                        @widget('region')
+
                         <div class="mb-3">
                             <label for="city">Tumanlar</label>
                             <div class="d-flex">
