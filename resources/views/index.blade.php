@@ -205,12 +205,13 @@
 
     function region_store() {
         var data = $('#name').val();
-        data = JSON.stringify(data);
         $.ajax({
             type: "POST",
-            url: "http://127.0.0.1:8000/regions",
-            data: data,
-        });
+            url: "http://127.0.0.1:8000/api/regions",
+            data: { "name": data },
+        }).then(response){
+            console.log(response);
+        }
     }
 
 

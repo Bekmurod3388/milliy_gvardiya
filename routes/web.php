@@ -20,4 +20,3 @@ Route::get('/test', function () {
     return view('test.index');
 });
 
-Route::apiResource('regions', \App\Http\Controllers\Api\RegionController::class);
