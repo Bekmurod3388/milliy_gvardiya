@@ -65,6 +65,6 @@ class ObjectController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Objectt::find($id)->delete();
     }
 }

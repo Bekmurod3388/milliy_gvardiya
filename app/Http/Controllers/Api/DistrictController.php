@@ -65,6 +65,6 @@ class DistrictController extends Controller
      */
     public function destroy($id)
     {
-        //
+        District::find($id)->delete();
     }
 }
