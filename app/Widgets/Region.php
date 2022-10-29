@@ -13,6 +13,7 @@ class Region extends AbstractWidget
      */
     protected $config = [];
     public $reloadTimeout=5;
+
     /**
      * Treat this method as a controller action.
      * Return view() or other content to display.
