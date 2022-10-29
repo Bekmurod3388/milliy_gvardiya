@@ -9,13 +9,20 @@
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     <title>Миллий Гвардия</title>
+    <style>
+        .date{
+            position: absolute;
+            right: 5%;
+        }
+    </style>
+
 </head>
 <body>
 <div class="p-3">
 
 
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!-- Region Modal -->
+    <div class="modal fade" id="region_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -27,7 +34,7 @@
                         {{csrf_field()}}
                         <div class="form-group">
                             <label for="name">Viloyat nomi</label>
-                            <input type="text" name="name" id="name" class="form-control">
+                            <input type="text" name="name" id="region_name" class="form-control">
                         </div>
                     </form>
                 </div>
@@ -39,6 +46,55 @@
         </div>
     </div>
 
+    <!-- District Modal -->
+    <div class="modal fade" id="district_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Tuman qo'shish</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('districts.store') }}" method="post" id="district_store">
+                        {{csrf_field()}}
+                        <div class="form-group">
+                            <label for="name">Tuman nomi</label>
+                            <input type="text" name="name" id="district_name" class="form-control">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Yopish</button>
+                    <button type="button" class="btn btn-primary" onclick="district_store()">Saqlash</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Building Modal -->
+    <div class="modal fade" id="building_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Bino qo'shish</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('objects.store') }}" method="post" id="building_store">
+                        {{csrf_field()}}
+                        <div class="form-group">
+                            <label for="name">Bino nomi</label>
+                            <input type="text" name="name" id="building_name" class="form-control">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Yopish</button>
+                    <button type="button" class="btn btn-primary" onclick="building_store()">Saqlash</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="col-12">
         <h1>Миллий Гвардия</h1>
@@ -50,11 +106,11 @@
                 <div class="card-body">
                     <h3>Sensors</h3>
                     <ul class="list-group">
-                        <li class="list-group-item list-group-item-success">An item</li>
-                        <li class="list-group-item list-group-item-danger">A second item</li>
-                        <li class="list-group-item list-group-item-success">A third item</li>
-                        <li class="list-group-item list-group-item-success">A fourth item</li>
-                        <li class="list-group-item list-group-item-success">And a fifth one</li>
+                        <li class="list-group-item list-group-item-success">3-sensor ishlayapti <span class="date">08:55</span></li>
+                        <li class="list-group-item list-group-item-danger">1-sensor ishlamayapti <span class="date">09:00</span></li>
+                        <li class="list-group-item list-group-item-success">5-sensor ishlayapti <span class="date">09:05</span> </li>
+                        <li class="list-group-item list-group-item-success">2-sensor ishlayapti <span class="date">09:10</span></li>
+                        <li class="list-group-item list-group-item-success">4-sensor ishlayapti <span class="date">09:15</span></li>
                     </ul>
                 </div>
             </div>
@@ -86,46 +142,47 @@
                     <h3>Manzillar</h3>
                     <form action="">
                         <div class="mb-3">
-                            <label for="city">Viloyatlar</label>
+                            <label for="region">Viloyatlar</label>
                             <div class="d-flex">
-                                <select name="city" id="city" class="form-control form-select">
+                                <select name="region" id="region" class="form-control form-select">
                                     @foreach($regions as $item)
                                         <option value="{{ $item->id }}">{{ $item->name }}</option>
                                     @endforeach
                                 </select>
                                 <button type="button" class="btn btn-success" data-bs-toggle="modal"
-                                        data-bs-target="#exampleModal">
+                                        data-bs-target="#region_modal">
                                     <i class="bi bi-plus-lg"></i>
                                 </button>
-                                <button type="button" class="btn btn-danger" onclick="region_delete()"><i class="bi bi-trash"></i></button>
+                                <button type="button" class="btn btn-danger" onclick="region_delete()"><i
+                                        class="bi bi-trash"></i></button>
                             </div>
                         </div>
 
                         <div class="mb-3">
-                            <label for="city">Tumanlar</label>
+                            <label for="district">Tumanlar</label>
                             <div class="d-flex">
-                                <select name="city" id="city" class="form-control form-select">
-                                    <option value="">Urganch</option>
-                                    <option value="">Toshkent</option>
-                                    <option value="">Navoiy</option>
+                                <select name="district" id="district" class="form-control form-select">
+                                    @foreach($districts as $item)
+                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                    @endforeach
                                 </select>
                                 <button type="button" class="btn btn-success" data-bs-toggle="modal"
-                                        data-bs-target="#exampleModal">
+                                        data-bs-target="#district_modal">
                                     <i class="bi bi-plus-lg"></i>
                                 </button>
-                                <button type="button" class="btn btn-danger"><i class="bi bi-trash"></i></button>
+                                <button type="button" class="btn btn-danger" onclick="district_delete()"><i class="bi bi-trash"></i></button>
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label for="city">Binolar</label>
+                            <label for="building">Binolar</label>
                             <div class="d-flex">
-                                <select name="city" id="city" class="form-control form-select">
-                                    <option value="">TATUUF</option>
-                                    <option value="">TATU</option>
-                                    <option value="">NDPU</option>
+                                <select name="building" id="building" class="form-control form-select">
+{{--                                    <option value="">TATUUF</option>--}}
+{{--                                    <option value="">TATU</option>--}}
+{{--                                    <option value="">NDPU</option>--}}
                                 </select>
                                 <button type="button" class="btn btn-success" data-bs-toggle="modal"
-                                        data-bs-target="#exampleModal">
+                                        data-bs-target="#building_modal">
                                     <i class="bi bi-plus-lg"></i>
                                 </button>
                                 <button type="button" class="btn btn-danger"><i class="bi bi-trash"></i></button>
@@ -209,7 +266,7 @@
 
 
     function region_store() {
-        var data = $('#name').val();
+        var data = $('#region_name').val();
         $.ajax({
             type: "POST",
             url: "http://127.0.0.1:8000/api/regions",
@@ -223,13 +280,13 @@
                 });
             }
         });
-        $('#exampleModal').modal('hide');
-        $('#name').val("");
+        $('#region_modal').modal('hide');
+        $('#region_name').val("");
         location.reload();
     }
 
     function region_delete() {
-        var id = $('#city').val();
+        var id = $('#region').val();
         // alert(id);
         $.ajax({
             type: "DELETE",
@@ -247,6 +304,79 @@
                 });
             },
         });
+        location.reload();
+    }
+
+    function district_store() {
+        var data = $('#district_name').val();
+        var region_id = $('#region').val();
+        $.ajax({
+            type: "POST",
+            url: "http://127.0.0.1:8000/api/districts/",
+            data: {"name": data, "region_id": region_id},
+            success: function () {
+                swal({
+                    title: "Muvaffaqqiyatli yaratildi",
+                    icon: "success",
+                });
+            },
+            error: function () {
+                swal({
+                    title: "Xatolik",
+                    icon: "error",
+                });
+            },
+        });
+        $('#district_modal').modal('hide');
+        $('#district_name').val("");
+        location.reload();
+    }
+
+    function district_delete() {
+        var id = $('#district').val();
+        $.ajax({
+            type: "DELETE",
+            url: "http://127.0.0.1:8000/api/districts/" + id,
+            success: function () {
+                swal({
+                    title: "Muvaffaqqiyatli o'chirildi",
+                    icon: "success",
+                });
+            },
+            error: function () {
+                swal({
+                    title: "Xatolik",
+                    icon: "error",
+                });
+            },
+        });
+        location.reload();
+    }
+
+    function building_store() {
+        var data = $('#building_name').val();
+        var district_id = $('#district').val();
+        alert(data);
+        alert(district_id);
+        $.ajax({
+            type: "POST",
+            url: "http://127.0.0.1:8000/api/objects/",
+            data: {"name": data, "district_id": district_id},
+            success: function () {
+                swal({
+                    title: "Muvaffaqqiyatli yaratildi",
+                    icon: "success",
+                });
+            },
+            error: function () {
+                swal({
+                    title: "Xatolik",
+                    icon: "error",
+                });
+            },
+        });
+        $('#building_modal').modal('hide');
+        $('#building_name').val("");
         location.reload();
     }
 
