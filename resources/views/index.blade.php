@@ -158,6 +158,7 @@
                             <label for="region">Viloyatlar</label>
                             <div class="d-flex">
                                 <select name="region" id="region" class="form-control form-select">
+                                    <option value="">Tanlang</option>
                                     @foreach($regions as $item)
                                         <option value="{{ $item->id }}">{{ $item->name }}</option>
                                     @endforeach
@@ -175,9 +176,9 @@
                             <label for="district">Tumanlar</label>
                             <div class="d-flex">
                                 <select name="district" id="district" class="form-control form-select">
-                                    @foreach($districts as $item)
-                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                    @endforeach
+{{--                                    @foreach($districts as $item)--}}
+{{--                                        <option value="{{ $item->id }}">{{ $item->name }}</option>--}}
+{{--                                    @endforeach--}}
                                 </select>
                                 <button type="button" class="btn btn-success" data-bs-toggle="modal"
                                         data-bs-target="#district_modal">
@@ -191,9 +192,9 @@
                             <label for="building">Binolar</label>
                             <div class="d-flex">
                                 <select name="building" id="building" class="form-control form-select">
-                                    @foreach($objects as $item)
-                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                    @endforeach
+{{--                                    @foreach($objects as $item)--}}
+{{--                                        <option value="{{ $item->id }}">{{ $item->name }}</option>--}}
+{{--                                    @endforeach--}}
                                 </select>
                                 <button type="button" class="btn btn-success" data-bs-toggle="modal"
                                         data-bs-target="#building_modal">
@@ -232,11 +233,9 @@
                 <div class="card-body">
                     <h3>Binolar</h3>
                     <ul class="list-group">
-                        <li class="list-group-item"><a href="#" class="page-link">An item</a></li>
-                        <li class="list-group-item"><a href="#" class="page-link">A second item</a></li>
-                        <li class="list-group-item"><a href="#" class="page-link">A third item</a></li>
-                        <li class="list-group-item"><a href="#" class="page-link">A fourth item</a></li>
-                        <li class="list-group-item"><a href="#" class="page-link">And a fifth one</a></li>
+                        @foreach($objects as $item)
+                            <li class="list-group-item"><a href="#" class="page-link">{{ $item['name'] }}</a></li>
+                        @endforeach
                     </ul>
                 </div>
             </div>
@@ -277,7 +276,31 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
 <script>
+    var district = @json($districts);
+    var building = @json($objects);
+    console.log(district, building);
 
+    $('#region').on('change', function () {
+        var region_id = $(this).val();
+        $('#district').empty();
+        $('#district').append('<option value="">Tanlang</option>');
+        for (let i = 0; i < district.length; i++) {
+            if (district[i].region_id == region_id) {
+                $('#district').append('<option value="' + district[i].region_id + '">' + district[i].name + '</option>');
+            }
+        }
+    })
+
+    $('#district').on('change', function () {
+        var district_id = $(this).val();
+        // alert(district_id);
+        $('#building').empty();
+        for (let i = 0; i < building.length; i++) {
+            if (building[i].district_id == district_id) {
+                $('#building').append('<option value="' + building[i].id + '">' + building[i].name + '</option>');
+            }
+        }
+    })
 
     function region_store() {
         var data = $('#region_name').val();
