@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     <title>Миллий Гвардия</title>
     <style>
-        .date{
+        .date {
             position: absolute;
             right: 5%;
         }
@@ -32,7 +32,7 @@
                 <div class="modal-body">
                     <form action="{{ route('regions.store') }}" method="post" id="region_store">
                         {{csrf_field()}}
-                        <div class="form-group">
+                        <div class="form-group mb-3">
                             <label for="name">Viloyat nomi</label>
                             <input type="text" name="name" id="region_name" class="form-control">
                         </div>
@@ -57,7 +57,7 @@
                 <div class="modal-body">
                     <form action="{{ route('districts.store') }}" method="post" id="district_store">
                         {{csrf_field()}}
-                        <div class="form-group">
+                        <div class="form-group mb-3">
                             <label for="name">Tuman nomi</label>
                             <input type="text" name="name" id="district_name" class="form-control">
                         </div>
@@ -82,9 +82,17 @@
                 <div class="modal-body">
                     <form action="{{ route('objects.store') }}" method="post" id="building_store">
                         {{csrf_field()}}
-                        <div class="form-group">
+                        <div class="form-group mb-3">
                             <label for="name">Bino nomi</label>
                             <input type="text" name="name" id="building_name" class="form-control">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="latitude">Latitude</label>
+                            <input type="text" name="latitude" id="building_latitude" class="form-control">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="longitude">Longitude</label>
+                            <input type="text" name="longitude" id="building_longitude" class="form-control">
                         </div>
                     </form>
                 </div>
@@ -106,11 +114,16 @@
                 <div class="card-body">
                     <h3>Sensors</h3>
                     <ul class="list-group">
-                        <li class="list-group-item list-group-item-success">3-sensor ishlayapti <span class="date">08:55</span></li>
-                        <li class="list-group-item list-group-item-danger">1-sensor ishlamayapti <span class="date">09:00</span></li>
-                        <li class="list-group-item list-group-item-success">5-sensor ishlayapti <span class="date">09:05</span> </li>
-                        <li class="list-group-item list-group-item-success">2-sensor ishlayapti <span class="date">09:10</span></li>
-                        <li class="list-group-item list-group-item-success">4-sensor ishlayapti <span class="date">09:15</span></li>
+                        <li class="list-group-item list-group-item-success">3-sensor ishlayapti <span
+                                class="date">08:55</span></li>
+                        <li class="list-group-item list-group-item-danger">1-sensor ishlamayapti <span class="date">09:00</span>
+                        </li>
+                        <li class="list-group-item list-group-item-success">5-sensor ishlayapti <span
+                                class="date">09:05</span></li>
+                        <li class="list-group-item list-group-item-success">2-sensor ishlayapti <span
+                                class="date">09:10</span></li>
+                        <li class="list-group-item list-group-item-success">4-sensor ishlayapti <span
+                                class="date">09:15</span></li>
                     </ul>
                 </div>
             </div>
@@ -170,22 +183,23 @@
                                         data-bs-target="#district_modal">
                                     <i class="bi bi-plus-lg"></i>
                                 </button>
-                                <button type="button" class="btn btn-danger" onclick="district_delete()"><i class="bi bi-trash"></i></button>
+                                <button type="button" class="btn btn-danger" onclick="district_delete()"><i
+                                        class="bi bi-trash"></i></button>
                             </div>
                         </div>
                         <div class="mb-3">
                             <label for="building">Binolar</label>
                             <div class="d-flex">
                                 <select name="building" id="building" class="form-control form-select">
-{{--                                    <option value="">TATUUF</option>--}}
-{{--                                    <option value="">TATU</option>--}}
-{{--                                    <option value="">NDPU</option>--}}
+                                    @foreach($objects as $item)
+                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                    @endforeach
                                 </select>
                                 <button type="button" class="btn btn-success" data-bs-toggle="modal"
                                         data-bs-target="#building_modal">
                                     <i class="bi bi-plus-lg"></i>
                                 </button>
-                                <button type="button" class="btn btn-danger"><i class="bi bi-trash"></i></button>
+                                <button type="button" class="btn btn-danger" onclick="building_delete()"><i class="bi bi-trash"></i></button>
                             </div>
                         </div>
                     </form>
@@ -272,11 +286,17 @@
             url: "http://127.0.0.1:8000/api/regions",
             data: {"name": data},
             success: function () {
-                // alert('success');
                 swal({
                     // title: "Good job!",
                     title: "Muvaffaqqiyatli yaratildi",
                     icon: "success",
+                });
+            },
+            error: function () {
+                swal({
+                    // title: "Good job!",
+                    title: "Xatolik",
+                    icon: "error",
                 });
             }
         });
@@ -356,12 +376,12 @@
     function building_store() {
         var data = $('#building_name').val();
         var district_id = $('#district').val();
-        alert(data);
-        alert(district_id);
+        var latitude = $('#building_latitude').val();
+        var longitude = $('#building_longitude').val();
         $.ajax({
             type: "POST",
             url: "http://127.0.0.1:8000/api/objects/",
-            data: {"name": data, "district_id": district_id},
+            data: {"name": data, "district_id": district_id, 'latitude': latitude, 'longitude': longitude},
             success: function () {
                 swal({
                     title: "Muvaffaqqiyatli yaratildi",
@@ -377,6 +397,27 @@
         });
         $('#building_modal').modal('hide');
         $('#building_name').val("");
+        location.reload();
+    }
+
+    function building_delete() {
+        var id = $('#building').val();
+        $.ajax({
+            type: "DELETE",
+            url: "http://127.0.0.1:8000/api/objects/" + id,
+            success: function () {
+                swal({
+                    title: "Muvaffaqqiyatli o'chirildi",
+                    icon: "success",
+                });
+            },
+            error: function () {
+                swal({
+                    title: "Xatolik",
+                    icon: "error",
+                });
+            },
+        });
         location.reload();
     }
 
